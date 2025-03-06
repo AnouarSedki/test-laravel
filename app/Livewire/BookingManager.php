@@ -1,20 +1,49 @@
 <?php
-namespace App\Http\Livewire;
+namespace App\Livewire;
 
 use Livewire\Component;
+use App\Models\Property;
+use App\Models\Booking;
+use Carbon\Carbon;
 
 class BookingManager extends Component
 {
-    public $propertyId;
+    public $properties;
+    public $selectedProperty;
+    public $startDate;
+    public $endDate;
 
-    public function book()
+    protected $rules = [
+        'selectedProperty' => 'required|exists:properties,id',
+        'startDate' => 'required|date',
+        'endDate' => 'required|date|after:startDate',
+    ];
+
+    public function mount()
     {
-        dd("Réservation pour la propriété ID: " . $this->propertyId);
+        $this->properties = Property::all();
+    }
+
+    public function submit()
+    {
+        $this->validate();
+
+        Booking::create([
+            'property_id' => $this->selectedProperty,
+            'start_date' => $this->startDate,
+            'end_date' => $this->endDate,
+        ]);
+
+        session()->flash('success', 'Réservation créée avec succès !');
+        $this->reset(['selectedProperty', 'startDate', 'endDate']);
     }
 
     public function render()
     {
-        return view('livewire.booking-manager');
+        return view('livewire.booking-manager')
+            ->layout('components.layouts.app');
     }
+
 }
+
 
