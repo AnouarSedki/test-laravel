@@ -14,4 +14,6 @@
             </div>
         </div>
     </div>
+    @livewire('booking-manager')
+
 </x-app-layout>

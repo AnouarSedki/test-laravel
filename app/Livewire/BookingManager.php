@@ -26,9 +26,14 @@ class BookingManager extends Component
 
     public function submit()
     {
-        $this->validate();
+        $this->validate([
+            'selectedProperty' => 'required|exists:properties,id',
+            'startDate' => 'required|date|after_or_equal:today',
+            'endDate' => 'required|date|after:startDate',
+        ]);
 
         Booking::create([
+            'user_id' => auth()->id(),
             'property_id' => $this->selectedProperty,
             'start_date' => $this->startDate,
             'end_date' => $this->endDate,
@@ -40,9 +45,9 @@ class BookingManager extends Component
 
     public function render()
     {
-        return view('livewire.booking-manager')
-            ->layout('components.layouts.app');
+        return view('livewire.booking-manager'); // Ce chemin est bon
     }
+
 
 }
 

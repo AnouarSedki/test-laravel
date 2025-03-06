@@ -4,7 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\BookingManager;
 
-Route::get('/booking', BookingManager::class)->name('booking');
+Route::get('/booking', BookingManager::class);
 // routes/web.php
 Route::get('/reservation', function () {
     return view('booking'); // Le nom de ta vue
